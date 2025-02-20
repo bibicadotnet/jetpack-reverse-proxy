@@ -11,16 +11,13 @@ export default {
       const imageResponse = await fetch(wpUrl, {
         headers: { 'Accept': request.headers.get('Accept') || '*/*' }
       });
-      const canonicalUrl = `http://bibica.net/wp-content/uploads${url.pathname}`;
 
       return new Response(imageResponse.body, {
         headers: {
-          'content-type': imageResponse.headers.get('content-type'),
-          'vary': 'Accept',
-          'Link': `<${canonicalUrl}>; rel="canonical"`,
-          'Cache-Control': 'public, max-age=31536000, immutable, no-transform',
-          'Pragma': 'public',
-          'X-Served-By': 'Cloudflare & Jetpack'
+          'content-type': 'image/webp',
+          'link': imageResponse.headers.get('link'),
+          'X-Cache': imageResponse.headers.get('x-nc'),
+          'X-Served-By': 'Cloudflare Pages & Jetpack'
         }
       });
     }
